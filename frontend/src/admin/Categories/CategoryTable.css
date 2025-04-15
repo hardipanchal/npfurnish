@@ -1,0 +1,44 @@
+.category-table {
+  width: 100%;
+  border-collapse: collapse; /* Ensures proper column alignment */
+  margin-top: 10px;
+}
+
+.category-table th,
+.category-table td {
+  border: 1px solid #ddd; /* Adds borders to all cells */
+  padding: 12px; /* Ensures proper spacing inside cells */
+  text-align: left;
+  min-width: 200px; /* Ensures column width is the same */
+}
+
+.category-table th {
+  background-color: #f3f4f6; /* Light gray background for header */
+  font-weight: bold;
+  text-align: left;
+}
+
+.category-table tr {
+  border-bottom: 1px solid #ddd; /* Adds a bottom border for better alignment */
+}
+
+.even-row {
+  background-color: #f9f9f9; /* Alternating row color */
+}
+
+.odd-row {
+  background-color: #ffffff;
+}
+
+.table-container {
+  max-width: 1000px; /* Ensures the table is properly sized */
+  margin: auto; /* Centers the table */
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  cursor: pointer;
+}
