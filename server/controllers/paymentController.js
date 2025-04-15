@@ -1,5 +1,8 @@
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Make sure environment variables are loaded
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -8,7 +11,7 @@ const razorpay = new Razorpay({
 
 // @desc Create Razorpay order
 // @route POST /api/payment/create-order
-const createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   const { amount, currency } = req.body;
 
   try {
@@ -27,7 +30,7 @@ const createOrder = async (req, res) => {
 
 // @desc Verify payment signature
 // @route POST /api/payment/verify
-const verifyPayment = async (req, res) => {
+export const verifyPayment = async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
   const generatedSignature = crypto
@@ -40,9 +43,4 @@ const verifyPayment = async (req, res) => {
   } else {
     res.status(400).json({ success: false, message: 'Payment verification failed' });
   }
-};
-
-module.exports = {
-  createOrder,
-  verifyPayment,
 };

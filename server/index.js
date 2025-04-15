@@ -17,18 +17,18 @@ dotenv.config();
 // App constants
 const PORT = process.env.PORT || 5000;
 const app = express();
-import paymentRoutes from "./routes/paymentRoutes.js";
+
 // Resolve __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// ✅ Ensure 'images' directory exists
+// Ensure 'images' directory exists
 const imagesDir = path.join(__dirname, "images");
 if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir, { recursive: true });
 }
 
-// ✅ CORS Configuration
+// CORS Configuration
 const allowedOrigins = ["http://localhost:5173", "http://yourfrontend.com"];
 
 app.use(cors({
@@ -45,15 +45,15 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-// ✅ Static & Middleware
-app.use("/images", express.static(imagesDir)); // Serve images
-app.use(express.json({ limit: "10mb" }));      // JSON body limit
-app.use(express.urlencoded({ extended: true })); // For form data
-app.use(cookieParser()); 
-app.use(morgan("dev")); 
+// Middleware
+app.use("/images", express.static(imagesDir));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan("dev"));
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
-// ✅ Basic Home Route
+// Home Route
 app.get("/", (req, res) => {
   res.json({ message: `🚀 Server is running on port ${PORT}` });
 });
@@ -68,26 +68,26 @@ import cartRoutes from "./routes/cartRoutes.js";
 import assignedProviderRoutes from "./routes/assignedProviderRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js"; // ✅ Fixed import
 import auth from "./middlewares/auth.js";
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/products", productRouter);
-app.use("/api/orders",auth, orderRouter);
+app.use("/api/orders", auth, orderRouter);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/assigned-providers", assignedProviderRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/payment", paymentRoutes);
+app.use("/api/payment", paymentRoutes); // ✅ Correct usage
 
-
-// ✅ 404 Handler
+// 404 Handler
 app.use((req, res, next) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// ✅ Global Error Handler
+// Global Error Handler
 app.use((err, req, res, next) => {
   console.error("❌ Error:", err.message);
   res.status(err.status || 500).json({
@@ -96,7 +96,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ✅ Unhandled Exceptions/Rejections
+// Unhandled Exceptions/Rejections
 process.on("uncaughtException", (err) => {
   console.error("❌ Uncaught Exception:", err);
   process.exit(1);
@@ -107,7 +107,7 @@ process.on("unhandledRejection", (err) => {
   process.exit(1);
 });
 
-// ✅ Start Server + Graceful Shutdown
+// Start Server
 const startServer = async () => {
   try {
     await connectDB();

@@ -1,14 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  createOrder,
-  verifyPayment,
-} = require('../controllers/paymentController');
+import { createOrder, verifyPayment } from '../controllers/paymentController.js';
 
-// Route to create Razorpay order
 router.post('/create-order', createOrder);
-
-// Route to verify Razorpay payment
 router.post('/verify', verifyPayment);
 
-module.exports = router;
+export default router;
